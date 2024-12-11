@@ -1,3 +1,38 @@
+<?php
+// Inclure le fichier de connexion à la base de données
+include 'db_connect.php';
+
+// Traitement des formulaires
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+
+    // Modifier une réservation
+    if (isset($_POST['edit'])) {
+        $id = $_POST['id'];
+        $nom_client = $_POST['nom_client'];
+        $date_reservation = $_POST['date_reservation'];
+        $nombre_personnes = $_POST['nombre_personnes'];
+        
+        $query = "UPDATE reservations SET nom_client = ?, date_reservation = ?, nombre_personnes = ? WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ssii", $nom_client, $date_reservation, $nombre_personnes, $id);
+        $stmt->execute();
+    }
+
+    // Supprimer une réservation
+    if (isset($_POST['delete'])) {
+        $id = $_POST['id'];
+        $query = "DELETE FROM reservations WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+    }
+}
+
+// Récupérer toutes les réservations
+$query = "SELECT * FROM reservations";
+$result = $conn->query($query);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,8 +86,128 @@
 </header>
 <!-- main -->
 <main>
-<h1 class="text-3xl font-bold text-center">Bienvenue à la Salle de Sport</h1>
-<p class="text-center text-gray-700 mt-4">Utilisez les liens ci-dessus pour naviguer dans l'application.</p>
+<h1 class="text-2xl font-bold mb-4">Gestion des Membres</h1>
+
+<!-- Afficher tous les membres -->
+<table class="min-w-full bg-white">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="py-2">Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        // Assurez-vous que $conn est bien une instance PDO
+        $stmt = $conn->query("SELECT * FROM membres");
+        // $supp = $conn->query("DELETE * FROM membres WHERE id_Membre=id_Membre");
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr class='border-b'>
+                    <td class='py-2'>{$row['nom']}</td>
+                    <td>{$row['prenom']}</td>
+                    <td>{$row['mail']}</td>
+                    <td>{$row['telephone']}</td>
+                    <td>
+                        <button  class='text-blue-500'>Modifier</button> |
+                        <button onclick='DELETE * FROM membres WHERE id_Membre=1;' class='text-red-500'>Supprimer</button>
+                    </td>
+                </tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
+<!-- parie des activité -->
+<h1 class="text-2xl font-bold mb-4">Gestion des Activités</h1>
+
+<!-- Afficher toutes les activités -->
+<table class="min-w-full bg-white">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="py-2">Nom</th>
+            <th>Description</th>
+            <th>Capacité</th>
+            <th>Date Début</th>
+            <th>Date Fin</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        $stmt = $conn->query("SELECT * FROM activite");
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr class='border-b'>
+                    <td class='py-2'>{$row['nom_Activite']}</td>
+                    <td>{$row['description']}</td>
+                    <td>{$row['capacite']}</td>
+                    <td>{$row['date_debut']}</td>
+                    <td>{$row['date_fin']}</td>
+                    <td>
+                        <a href='edit_activite.php?id={$row['id_Activite']}' class='text-blue-500'>Modifier</a> |
+                        <a href='delete_activite.php?id={$row['id_Activite']}' class='text-red-500'>Supprimer</a>
+                    </td>
+                </tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
+<!-- Formulaire pour ajouter une activité -->
+<h2 class="text-xl font-bold mt-6">Ajouter une Activité</h2>
+<form action="" method="POST" class="bg-gray-100 p-4 rounded">
+    <input type="text" name="nom_Activite" placeholder="Nom de l'activité" required class="border p-2 rounded w-full mb-2">
+    <textarea name="description" placeholder="Description" required class="border p-2 rounded w-full mb-2"></textarea>
+    <input type="number" name="capacite" placeholder="Capacité" required class="border p-2 rounded w-full mb-2">
+    <input type="date" name="date_debut" required class="border p-2 rounded w-full mb-2">
+    <input type="date" name="date_fin" required class="border p-2 rounded w-full mb-2">
+    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Ajouter</button>
+</form>
+
+<!-- --------------------------------------reservation---------------------- -->
+ <!-- Tableau des réservations -->
+ <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-2xl font-semibold mb-4">Liste des Réservations</h2>
+            <table class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">ID</th>
+                        <th class="px-4 py-2">Nom du Client</th>
+                        <th class="px-4 py-2">Date</th>
+                        <th class="px-4 py-2">Nombre de Personnes</th>
+                        <th class="px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $stmt = $conn->query("SELECT * FROM reservations");
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))  : ?>
+                        <tr class="border-t">
+                            <td class="px-4 py-2"><?= $row['id_reservation'] ?></td>
+                            <td class="px-4 py-2"><?= $row['id_client'] ?></td>
+                            <td class="px-4 py-2"><?= $row['date_reservation'] ?></td>
+                            <td class="px-4 py-2"><?= $row['nombre_personnes'] ?></td>
+                            <td class="px-4 py-2">
+                                <!-- Formulaire de modification -->
+                                <form method="POST" action="" class="inline">
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                    <input type="text" name="nom_client" value="<?= $row['nom_client'] ?>" class="border p-1 rounded w-28">
+                                    <input type="date" name="date_reservation" value="<?= $row['date_reservation'] ?>" class="border p-1 rounded w-28">
+                                    <input type="number" name="nombre_personnes" value="<?= $row['nombre_personnes'] ?>" class="border p-1 rounded w-16">
+                                    <button type="submit" name="edit" class="bg-green-500 text-white px-2 py-1 rounded">Modifier</button>
+                                </form>
+                                <!-- Formulaire de suppression -->
+                                <form method="POST" action="" class="inline">
+                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                    <button type="submit" name="delete" class="bg-red-500 text-white px-2 py-1 rounded">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
 </main>
 
 

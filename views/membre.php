@@ -5,98 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Découvrez une solution de paiement puissante pour les entreprises de logiciels. Simplifiez vos processus, de la caisse au respect des taxes mondiales, avec notre outil innovant et fiable.">
     <meta name="keywords" content="paiement en ligne, solution de paiement, logiciel de paiement, compliance fiscale, taxes mondiales, outil de paiement, entreprises de logiciels, checkout, simplification des paiements">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <title>SALLE DU SPORT</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+
     <!-- header -->
     <header>
-    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
-        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-        <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
-            <div class="flex items-center lg:order-2">
-                <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a>
-                <a href="#" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Get started</a>
-                <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-                    <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                </button>
+        <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+            <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+            <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
+                <div class="flex items-center lg:order-2">
+                    <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a>
+                    <a href="#" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Get started</a>
+                    <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                        <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+                    <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                        <li>
+                            <a href="#" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Company</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Marketplace</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Features</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Team</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                    <li>
-                        <a href="#" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Company</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Marketplace</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Features</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Team</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 <!-- main -->
 <main>
 <?php 
 
-include('db_connect.php'); // Connexion à la base de données
+include('db_connect.php');
 ?>
 
-<h1 class="text-2xl font-bold mb-4">Gestion des Membres</h1>
 
-<!-- Afficher tous les membres -->
-<table class="min-w-full bg-white">
-    <thead>
-        <tr class="bg-gray-200">
-            <th class="py-2">Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Téléphone</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php 
-        $result = $conn->query("SELECT * FROM membres");
-        while($row = $result->fetch_assoc()) {
-            echo "<tr class='border-b'>
-                    <td class='py-2'>{$row['nom']}</td>
-                    <td>{$row['prenom']}</td>
-                    <td>{$row['mail']}</td>
-                    <td>{$row['telephone']}</td>
-                    <td>
-                        <a href='edit_membre.php?id={$row['id_Membre']}' class='text-blue-500'>Modifier</a> |
-                        <a href='delete_membre.php?id={$row['id_Membre']}' class='text-red-500'>Supprimer</a>
-                    </td>
-                </tr>";
+<div class="container mx-auto mt-10 p-5">
+        <!-- Section de choix -->
+        <div id="choice-section" class="flex justify-center gap-8">
+            <div onclick="showConnexionForm()" class="w-1/4 bg-blue-500 text-white p-10 rounded-lg text-center cursor-pointer hover:bg-blue-700 transition">
+                <h2 class="text-xl font-bold">Connexion</h2>
+            </div>
+            <div onclick="showActivityForm()" class="w-1/4 bg-green-500 text-white p-10 rounded-lg text-center cursor-pointer hover:bg-green-700 transition">
+                <h2 class="text-xl font-bold">Déjà Connecté</h2>
+            </div>
+        </div>
+
+        <!-- Formulaire de connexion -->
+        <div id="connexion-form" class="flex justify-center mt-10">
+            <h2 class="text-2xl font-bold mb-5">Formulaire de Connexion</h2>
+            <form id="membreForm" action="membre.php" method="POST" class="bg-white p-8 shadow-md rounded-lg">
+                <label class="block mb-4">
+                    <span class="block text-gray-700">Nom</span>
+                    <input type="text" name="nom" class="w-full mt-1 p-2 border rounded" required>
+                </label>
+                <label class="block mb-4">
+                    <span class="block text-gray-700">Prénom</span>
+                    <input type="text" name="prenom" class="w-full mt-1 p-2 border rounded" required>
+                </label>
+                <label class="block mb-4">
+                    <span class="block text-gray-700">Email</span>
+                    <input type="email" name="mail" class="w-full mt-1 p-2 border rounded" required>
+                </label>
+                <label class="block mb-4">
+                    <span class="block text-gray-700">Téléphone</span>
+                    <input type="tel" name="telephone" class="w-full mt-1 p-2 border rounded" required>
+                </label>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">S'inscrire</button>
+            </form>
+        </div>
+
+        <!-- Formulaire des activités -->
+        <div id="activity-form" class="hidden mt-10">
+            <h2 class="text-2xl font-bold mb-5">Formulaire de Réservation d'Activités</h2>
+            <form id="activityForm" action="membre.php" method="POST" class="bg-white p-8 shadow-md rounded-lg">
+                <label class="block mb-4">
+                    <span class="block text-gray-700">Choisissez une activité</span>
+                    <select name="activite_id" class="w-full mt-1 p-2 border rounded">
+                        <?php 
+                            // Affiche la liste des activités 
+                            // Connectez-vous à la base de données et récupérez les activités 
+                            $conn = new PDO("mysql:host=localhost;dbname=salle_sport", "root", "");
+                            $result = $conn->query("SELECT id, nom FROM activites");
+                            while ($row = $result->fetch()) {
+                                echo "<option value='" . $row['id'] . "'>" . $row['nom'] . "</option>";
+                            }
+                        ?>
+                    </select>
+                </label>
+                <button type="submit" class="bg-green-500 text-white p-2 rounded hover:bg-green-700">Réserver</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showConnexionForm() {
+            document.getElementById('choice-section').classList.add('hidden');
+            document.getElementById('connexion-form').classList.remove('hidden');
         }
-        ?>
-    </tbody>
-</table>
 
-<!-- Formulaire pour ajouter un membre -->
-<h2 class="text-xl font-bold mt-6">Ajouter un Membre</h2>
-<form action="add_membre.php" method="POST" class="bg-gray-100 p-4 rounded">
-    <input type="text" name="nom" placeholder="Nom" required class="border p-2 rounded w-full mb-2">
-    <input type="text" name="prenom" placeholder="Prénom" required class="border p-2 rounded w-full mb-2">
-    <input type="email" name="mail" placeholder="Email" required class="border p-2 rounded w-full mb-2">
-    <input type="text" name="telephone" placeholder="Téléphone" required class="border p-2 rounded w-full mb-2">
-    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Ajouter</button>
-</form>
+        function showActivityForm() {
+            document.getElementById('choice-section').classList.add('hidden');
+            document.getElementById('activity-form').classList.remove('hidden');
+        }
+    </script>
 </main>
 
 
@@ -186,3 +217,29 @@ include('db_connect.php'); // Connexion à la base de données
 <script src="../assets/js/script1.js"></script>
 </body>
 </html>
+
+<?php 
+// Traitement des formulaires
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $conn = new PDO("mysql:host=localhost;dbname=salle_sport", "root", "");
+    
+    if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['mail']) && isset($_POST['telephone'])) {
+        // Insertion dans la table des membres
+        $stmt = $conn->prepare("INSERT INTO membres (nom, prenom, mail, telephone) VALUES (:nom, :prenom, :mail, :telephone)");
+        $stmt->execute([
+            ':nom' => $_POST['nom'],
+            ':prenom' => $_POST['prenom'],
+            ':mail' => $_POST['mail'],
+            ':telephone' => $_POST['telephone']
+        ]);
+        echo "<script>showActivityForm();</script>";
+    } 
+    
+    if (isset($_POST['activite_id'])) {
+        // Insertion dans la table des réservations
+        $stmt = $conn->prepare("INSERT INTO reservations (id_activite) VALUES (:id_activite)");
+        $stmt->execute([':id_activite' => $_POST['activite_id']]);
+        echo "<p class='bg-green-100 p-3 rounded mt-5'>Réservation réussie !</p>";
+    }
+}
+?>
