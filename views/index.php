@@ -11,8 +11,8 @@
 </head>
 <body>
     <!-- header -->
-    <header>
-    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+    <header class="bg-purple-100">
+    <nav class="bg-purple-100 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
         <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
             <div class="flex items-center lg:order-2">
@@ -49,7 +49,7 @@
         </div>
     </nav>
 </header>
-<section class="bg-purple-100 dark:bg-gray-900">
+<section class="bg-purple-100 dark:bg-gray-900 ">
     <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
         <!-- Texte et boutons -->
         <div class="mr-auto place-self-center lg:col-span-7">
@@ -79,7 +79,37 @@
 </section>
 
 <!-- main -->
-<main>
+<main class="mt-10">
+    <section class="bg-white dark:bg-gray-900 flex justify-around">
+    <div class="max-w-sm rounded overflow-hidden shadow-lg">
+  <img class="w-full" src="../assets/images/membre.jpg" alt="Sunset in the mountains">
+  <div class="px-6 py-4">
+    <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
+    <p class="text-gray-700 text-base">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+    </p>
+  </div>
+  <div class="px-6 pt-4 pb-2">
+  <button onclick="window.location.href='membre.php'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+  Membre
+</button>
+  </div>
+</div>
+<div class="max-w-sm rounded overflow-hidden shadow-lg">
+  <img class="w-full" src="../assets/images/manager.jpg" alt="Sunset in the mountains">
+  <div class="px-6 py-4">
+    <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
+    <p class="text-gray-700 text-base">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+    </p>
+  </div>
+  <div class="px-6 pt-4 pb-2">
+  <button onclick="window.location.href='admin.php'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+  Administration
+</button>
+  </div>
+</div>
+    </section>
 <section class="bg-white dark:bg-gray-900">
   <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
       <div class="max-w-screen-md mb-8 lg:mb-16">
@@ -262,7 +292,7 @@
 
 
 <!--Footer container-->
-<footer class="bg-gray-100  dark:bg-gray-900 bottom-0">
+<footer class="bg-purple-100  dark:bg-gray-900 bottom-0">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="md:flex md:justify-between">
           <div class="mb-6 md:mb-0">

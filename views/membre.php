@@ -13,8 +13,8 @@
 <body>
 
     <!-- header -->
-    <header>
-        <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+    <header class="bg-purple-100">
+        <nav class="bg-purple-100 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
                 <div class="flex items-center lg:order-2">
@@ -29,7 +29,7 @@
                 <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                     <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                         <li>
-                            <a href="#" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
+                            <a href="index.php" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
                         </li>
                         <li>
                             <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Company</a>
@@ -52,7 +52,7 @@
         </nav>
     </header>
 <!-- main -->
-<main>
+<main class="m-16">
 <?php 
 
 include('db_connect.php');
@@ -95,26 +95,90 @@ include('db_connect.php');
         </div>
 
         <!-- Formulaire des activités -->
-        <div id="activity-form" class="hidden mt-10">
-            <h2 class="text-2xl font-bold mb-5">Formulaire de Réservation d'Activités</h2>
-            <form id="activityForm" action="membre.php" method="POST" class="bg-white p-8 shadow-md rounded-lg">
-                <label class="block mb-4">
-                    <span class="block text-gray-700">Choisissez une activité</span>
-                    <select name="activite_id" class="w-full mt-1 p-2 border rounded">
-                        <?php 
-                            // Affiche la liste des activités 
-                            // Connectez-vous à la base de données et récupérez les activités 
-                            $conn = new PDO("mysql:host=localhost;dbname=salle_sport", "root", "");
-                            $result = $conn->query("SELECT id, nom FROM activites");
-                            while ($row = $result->fetch()) {
-                                echo "<option value='" . $row['id'] . "'>" . $row['nom'] . "</option>";
-                            }
-                        ?>
-                    </select>
-                </label>
-                <button type="submit" class="bg-green-500 text-white p-2 rounded hover:bg-green-700">Réserver</button>
-            </form>
-        </div>
+        <div id="activity-form" class="block mt-10">
+    <h2 class="text-2xl font-bold mb-5">Formulaire de Réservation d'Activités</h2>
+    
+    <!-- Formulaire de réservation -->
+    <form id="activityForm" action="membre.php" method="POST" class="bg-white p-8 shadow-md rounded-lg">
+        
+        <!-- Sélection de l'activité -->
+        <label class="block mb-4">
+            <span class="block text-gray-700">Choisissez une activité</span>
+            <select name="activite_id" id="activiteSelect" class="w-full mt-1 p-2 border rounded" onchange="afficherDescription()">
+                <option value="" disabled selected>-- Sélectionnez une activité --</option>
+                <?php 
+                    include "db_connect.php";
+                    $result = $conn->query("SELECT id_Activite, nom_Activité, description FROM activite");
+                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                        echo "<option value='" . $row['id_Activite'] . "' data-description='" . htmlspecialchars($row['description'], ENT_QUOTES) . "'>" . $row['nom_Activité'] . "</option>";
+                    }
+                ?>
+            </select>
+        </label>
+
+        <!-- Affichage de la description de l'activité -->
+        <div id="activity-description" class="mt-4 p-4 bg-gray-100 rounded text-gray-800"></div>
+
+        <!-- Bouton de soumission -->
+        <button type="submit" name="reserver" class="bg-green-500 text-white p-2 rounded hover:bg-green-700 w-full mt-4">
+            Réserver
+        </button>
+    </form>
+</div>
+
+<!-- Affichage des réservations de l'utilisateur -->
+<div id="reservations" class="block mt-10">
+    <h2 class="text-2xl font-bold mb-5">Vos Réservations</h2>
+
+    <table class="min-w-full bg-white">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="py-2">ID Réservation</th>
+                <th>Nom de l'Activité</th>
+                <th>Date de Réservation</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                // On suppose que l'id du membre est défini dans $_SESSION['idmembre']
+                $idmembre = 1; // Remplacez par $_SESSION['idmembre'] si session active
+                $reservations = $conn->prepare("SELECT r.id_reservation, a.nom_Activité, r.date_reservation, r.statut 
+                                                FROM reservations r 
+                                                JOIN activite a ON r.idactivite = a.id_Activite 
+                                                WHERE r.idmembre = ?");
+                $reservations->execute([$idmembre]);
+                
+                while ($row = $reservations->fetch(PDO::FETCH_ASSOC)) {
+                    echo "
+                    <tr class='border-t'>
+                        <td class='px-4 py-2'>{$row['id_reservation']}</td>
+                        <td class='px-4 py-2'>{$row['nom_Activité']}</td>
+                        <td class='px-4 py-2'>{$row['date_reservation']}</td>
+                        <td class='px-4 py-2'>{$row['statut']}</td>
+                    </tr>";
+                }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function afficherDescription() {
+        const select = document.getElementById('activiteSelect');
+        const descriptionDiv = document.getElementById('activity-description');
+        
+        const selectedOption = select.options[select.selectedIndex];
+        const description = selectedOption.getAttribute('data-description');
+        
+        if (description) {
+            descriptionDiv.innerHTML = `<p><strong>Description :</strong> ${description}</p>`;
+        } else {
+            descriptionDiv.innerHTML = '';
+        }
+    }
+</script>
+
     </div>
 
     <script>
@@ -132,7 +196,7 @@ include('db_connect.php');
 
 
 <!--Footer container-->
-<footer class="bg-gray-500  dark:bg-gray-900 bottom-0">
+<footer class="bg-purple-100  dark:bg-gray-900 bottom-0">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="md:flex md:justify-between">
           <div class="mb-6 md:mb-0">
@@ -219,27 +283,82 @@ include('db_connect.php');
 </html>
 
 <?php 
-// Traitement des formulaires
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reserver'])) {
+    try {
+        // Vérification si tous les champs requis pour la réservation sont présents et non vides
+        if (!empty($_POST['id_membre']) && !empty($_POST['id_activite']) && !empty($_POST['date_reservation']) && !empty($_POST['heure_reservation'])) {
+            
+            // Sécuriser les entrées utilisateurs (protection XSS)
+            $id_membre = (int) $_POST['id_membre']; // On force l'id à être un entier
+            $id_activite = (int) $_POST['id_activite']; // On force l'id à être un entier
+            $date_reservation = htmlspecialchars(trim($_POST['date_reservation']));
+            $heure_reservation = htmlspecialchars(trim($_POST['heure_reservation']));
+
+            // Insertion dans la table des réservations
+            $stmt = $conn->prepare("INSERT INTO reservation (id_membre, id_activite, date_reservation, heure_reservation) 
+                                    VALUES (:id_membre, :id_activite, :date_reservation, :heure_reservation)");
+            $stmt->execute([
+                ':id_membre' => $id_membre,
+                ':id_activite' => $id_activite,
+                ':date_reservation' => $date_reservation,
+                ':heure_reservation' => $heure_reservation
+            ]);
+
+            // Affichage du message de confirmation
+            echo "<script>
+                    alert('Réservation réussie !');
+                  </script>";
+
+        } else {
+            echo "<script>alert('Veuillez remplir tous les champs de la réservation.');</script>";
+        }
+
+    } catch (PDOException $e) {
+        // Affichage de l'erreur s'il y a un problème de connexion ou d'insertion
+        echo "<script>alert('Erreur lors de la réservation : " . $e->getMessage() . "');</script>";
+    }
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = new PDO("mysql:host=localhost;dbname=salle_sport", "root", "");
-    
-    if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['mail']) && isset($_POST['telephone'])) {
-        // Insertion dans la table des membres
-        $stmt = $conn->prepare("INSERT INTO membres (nom, prenom, mail, telephone) VALUES (:nom, :prenom, :mail, :telephone)");
-        $stmt->execute([
-            ':nom' => $_POST['nom'],
-            ':prenom' => $_POST['prenom'],
-            ':mail' => $_POST['mail'],
-            ':telephone' => $_POST['telephone']
-        ]);
-        echo "<script>showActivityForm();</script>";
-    } 
-    
-    if (isset($_POST['activite_id'])) {
-        // Insertion dans la table des réservations
-        $stmt = $conn->prepare("INSERT INTO reservations (id_activite) VALUES (:id_activite)");
-        $stmt->execute([':id_activite' => $_POST['activite_id']]);
-        echo "<p class='bg-green-100 p-3 rounded mt-5'>Réservation réussie !</p>";
+    try {
+        // Vérification si tous les champs sont présents et non vides
+        if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['telephone'])) {
+            
+            // Sécuriser les entrées utilisateurs (protection XSS)
+            $nom = htmlspecialchars(trim($_POST['nom']));
+            $prenom = htmlspecialchars(trim($_POST['prenom']));
+            $mail = htmlspecialchars(trim($_POST['mail']));
+            $telephone = htmlspecialchars(trim($_POST['telephone']));
+
+            // Validation de l'email
+            if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+                echo "<script>alert('Veuillez entrer un email valide.');</script>";
+                exit;
+            }
+
+            // Insertion dans la table des membres
+            $stmt = $conn->prepare("INSERT INTO membres (nom, prenom, mail, telephone) 
+                                    VALUES (:nom, :prenom, :mail, :telephone)");
+            $stmt->execute([
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':mail' => $mail,
+                ':telephone' => $telephone
+            ]);
+
+            // Affichage du message de confirmation et appel de la fonction pour afficher le formulaire d'activités
+            echo "<script>
+                    alert('Inscription réussie ! Vous pouvez maintenant réserver des activités.');
+                    showActivityForm();
+                  </script>";
+
+        } else {
+            echo "<script>alert('Veuillez remplir tous les champs du formulaire.');</script>";
+        }
+
+    } catch (PDOException $e) {
+        // Affichage de l'erreur s'il y a un problème de connexion ou d'insertion
+        echo "<script>alert('Erreur lors de l\'insertion des données : " . $e->getMessage() . "');</script>";
     }
 }
 ?>

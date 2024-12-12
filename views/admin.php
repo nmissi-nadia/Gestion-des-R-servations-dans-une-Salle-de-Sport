@@ -5,34 +5,61 @@ include 'db_connect.php';
 // Traitement des formulaires
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-
-    // Modifier une réservation
+    // Vérification de la modification d'une réservation
     if (isset($_POST['edit'])) {
-        $id = $_POST['id'];
-        $nom_client = $_POST['nom_client'];
-        $date_reservation = $_POST['date_reservation'];
-        $nombre_personnes = $_POST['nombre_personnes'];
+        $id_reservation = intval($_POST['id_reservation']); // Renommage du champ id -> id_reservation
+        $idmembre = intval($_POST['idmembre']); // Assurez-vous que c'est un nombre entier
+        $idactivite = intval($_POST['idactivite']); // Assurez-vous que c'est un nombre entier
+        $date_reservation = $_POST['date_reservation']; // Date au format DATETIME
+        $statut = $_POST['statut']; // Statut (Confirmée ou Annulée)
         
-        $query = "UPDATE reservations SET nom_client = ?, date_reservation = ?, nombre_personnes = ? WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssii", $nom_client, $date_reservation, $nombre_personnes, $id);
-        $stmt->execute();
+        // Validation des entrées utilisateur
+        if (!empty($date_reservation) && in_array($statut, ['Confirmée', 'Annulée'])) {
+            $query = "UPDATE reservations 
+                      SET idmembre = ?, idactivite = ?, date_reservation = ?, statut = ? 
+                      WHERE id_reservation = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("iissi", $idmembre, $idactivite, $date_reservation, $statut, $id_reservation);
+            
+            if ($stmt->execute()) {
+                echo "Réservation mise à jour avec succès.";
+            } else {
+                echo "Erreur lors de la mise à jour de la réservation : " . $stmt->error;
+            }
+        } else {
+            echo "Les champs sont invalides.";
+        }
     }
 
-    // Supprimer une réservation
+    // Vérification de la suppression d'une réservation
     if (isset($_POST['delete'])) {
-        $id = $_POST['id'];
-        $query = "DELETE FROM reservations WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
+        $id_reservation = intval($_POST['id_reservation']); // Renommage du champ id -> id_reservation
+        
+        if ($id_reservation > 0) {
+            $query = "DELETE FROM reservations WHERE id_reservation = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $id_reservation);
+            
+            if ($stmt->execute()) {
+                echo "Réservation supprimée avec succès.";
+            } else {
+                echo "Erreur lors de la suppression de la réservation : " . $stmt->error;
+            }
+        } else {
+            echo "ID de réservation invalide.";
+        }
     }
 }
 
 // Récupérer toutes les réservations
 $query = "SELECT * FROM reservations";
 $result = $conn->query($query);
+
+if ($result === false) {
+    echo "Erreur lors de la récupération des réservations : " . $conn->error;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,8 +73,8 @@ $result = $conn->query($query);
 </head>
 <body>
     <!-- header -->
-    <header>
-    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+    <header class="bg-purple-100">
+    <nav class="bg-purple-100 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
         <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
             <div class="flex items-center lg:order-2">
@@ -62,7 +89,7 @@ $result = $conn->query($query);
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
-                        <a href="#" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
+                        <a href="index.php" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
                     </li>
                     <li>
                         <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Company</a>
@@ -85,8 +112,8 @@ $result = $conn->query($query);
     </nav>
 </header>
 <!-- main -->
-<main>
-<h1 class="text-2xl font-bold mb-4">Gestion des Membres</h1>
+<main class="m-16">
+<h1 class="text-2xl m-16 font-bold mb-4">Gestion des Membres</h1>
 
 <!-- Afficher tous les membres -->
 <table class="min-w-full bg-white">
@@ -121,7 +148,7 @@ $result = $conn->query($query);
 </table>
 
 <!-- parie des activité -->
-<h1 class="text-2xl font-bold mb-4">Gestion des Activités</h1>
+<h1 class="text-2xl m-16 font-bold mb-4">Gestion des Activités</h1>
 
 <!-- Afficher toutes les activités -->
 <table class="min-w-full bg-white">
@@ -140,7 +167,7 @@ $result = $conn->query($query);
         $stmt = $conn->query("SELECT * FROM activite");
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             echo "<tr class='border-b'>
-                    <td class='py-2'>{$row['nom_Activite']}</td>
+                    <td class='py-2'>{$row['nom_Activité']}</td>
                     <td>{$row['description']}</td>
                     <td>{$row['capacite']}</td>
                     <td>{$row['date_debut']}</td>
@@ -156,7 +183,7 @@ $result = $conn->query($query);
 </table>
 
 <!-- Formulaire pour ajouter une activité -->
-<h2 class="text-xl font-bold mt-6">Ajouter une Activité</h2>
+<h2 class="text-xl m-16 font-bold mt-6">Ajouter une Activité</h2>
 <form action="" method="POST" class="bg-gray-100 p-4 rounded">
     <input type="text" name="nom_Activite" placeholder="Nom de l'activité" required class="border p-2 rounded w-full mb-2">
     <textarea name="description" placeholder="Description" required class="border p-2 rounded w-full mb-2"></textarea>
@@ -174,37 +201,57 @@ $result = $conn->query($query);
                 <thead>
                     <tr>
                         <th class="px-4 py-2">ID</th>
-                        <th class="px-4 py-2">Nom du Client</th>
-                        <th class="px-4 py-2">Date</th>
-                        <th class="px-4 py-2">Nombre de Personnes</th>
-                        <th class="px-4 py-2">Actions</th>
+                        <th class="px-4 py-2">Nom du Membre</th>
+                        <th class="px-4 py-2">Id activité</th>
+                        <th class="px-4 py-2">date</th>
+                        <th class="px-4 py-2">statut</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $stmt = $conn->query("SELECT * FROM reservations");
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC))  : ?>
-                        <tr class="border-t">
-                            <td class="px-4 py-2"><?= $row['id_reservation'] ?></td>
-                            <td class="px-4 py-2"><?= $row['id_client'] ?></td>
-                            <td class="px-4 py-2"><?= $row['date_reservation'] ?></td>
-                            <td class="px-4 py-2"><?= $row['nombre_personnes'] ?></td>
-                            <td class="px-4 py-2">
-                                <!-- Formulaire de modification -->
-                                <form method="POST" action="" class="inline">
-                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                    <input type="text" name="nom_client" value="<?= $row['nom_client'] ?>" class="border p-1 rounded w-28">
-                                    <input type="date" name="date_reservation" value="<?= $row['date_reservation'] ?>" class="border p-1 rounded w-28">
-                                    <input type="number" name="nombre_personnes" value="<?= $row['nombre_personnes'] ?>" class="border p-1 rounded w-16">
-                                    <button type="submit" name="edit" class="bg-green-500 text-white px-2 py-1 rounded">Modifier</button>
-                                </form>
-                                <!-- Formulaire de suppression -->
-                                <form method="POST" action="" class="inline">
-                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                    <button type="submit" name="delete" class="bg-red-500 text-white px-2 py-1 rounded">Supprimer</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
+                <?php 
+$stmt = $conn->query("SELECT * FROM reservations"); 
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)) : 
+?>
+<tr class="border-t">
+    <!-- Affichage des colonnes de la table reservations -->
+    <td class="px-4 py-2"><?= htmlspecialchars($row['id_reservation']) ?></td>
+    <td class="px-4 py-2"><?= htmlspecialchars($row['idmembre']) ?></td>
+    <td class="px-4 py-2"><?= htmlspecialchars($row['idactivite']) ?></td>
+    <td class="px-4 py-2"><?= htmlspecialchars($row['date_reservation']) ?></td>
+    <td class="px-4 py-2"><?= htmlspecialchars($row['statut']) ?></td>
+
+    <td class="px-4 py-2">
+        <!-- Formulaire de modification -->
+        <form method="POST" action="" class="inline">
+            <input type="hidden" name="id_reservation" value="<?= htmlspecialchars($row['id_reservation']) ?>">
+            
+            <!-- Sélection de l'ID du membre -->
+            <input type="number" name="idmembre" value="<?= htmlspecialchars($row['idmembre']) ?>" class="border p-1 rounded w-28">
+            
+            <!-- Sélection de l'ID de l'activité -->
+            <input type="number" name="idactivite" value="<?= htmlspecialchars($row['idactivite']) ?>" class="border p-1 rounded w-28">
+            
+            <!-- Date de réservation -->
+            <input type="datetime-local" name="date_reservation" value="<?= htmlspecialchars(date('Y-m-d\TH:i', strtotime($row['date_reservation']))) ?>" class="border p-1 rounded w-28">
+            
+            <!-- Sélection du statut de la réservation -->
+            <select name="statut" class="border p-1 rounded w-28">
+                <option value="Confirmée" <?= $row['statut'] === 'Confirmée' ? 'selected' : '' ?>>Confirmée</option>
+                <option value="Annulée" <?= $row['statut'] === 'Annulée' ? 'selected' : '' ?>>Annulée</option>
+            </select>
+            
+            <button type="submit" name="edit" class="bg-green-500 text-white px-2 py-1 rounded">Modifier</button>
+        </form>
+
+        <!-- Formulaire de suppression -->
+        <form method="POST" action="" class="inline">
+            <input type="hidden" name="id_reservation" value="<?= htmlspecialchars($row['id_reservation']) ?>">
+            <button type="submit" name="delete" class="bg-red-500 text-white px-2 py-1 rounded">Supprimer</button>
+        </form>
+    </td>
+</tr>
+<?php endwhile; ?>
+
                 </tbody>
             </table>
         </div>
@@ -212,7 +259,7 @@ $result = $conn->query($query);
 
 
 <!--Footer container-->
-<footer class="bg-gray-500  dark:bg-gray-900 bottom-0">
+<footer class="bg-purple-100  dark:bg-gray-900 bottom-0">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="md:flex md:justify-between">
           <div class="mb-6 md:mb-0">
