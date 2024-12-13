@@ -6,7 +6,7 @@
     <meta name="description" content="Découvrez une solution de paiement puissante pour les entreprises de logiciels. Simplifiez vos processus, de la caisse au respect des taxes mondiales, avec notre outil innovant et fiable.">
     <meta name="keywords" content="paiement en ligne, solution de paiement, logiciel de paiement, compliance fiscale, taxes mondiales, outil de paiement, entreprises de logiciels, checkout, simplification des paiements">
 
-    <title>SALLE DU SPORT</title>
+    <title>ENERGYM</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>

@@ -3,7 +3,7 @@ include "db_connect.php";
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         // Vérification si tous les champs requis pour la réservation sont présents et non vides
-        if (!empty($_GET['id_activite'])) {
+        if (!empty($_GET['id_activite']) && isset($_GET['reserver'])) {
             
             // Sécuriser les entrées utilisateurs (protection XSS)
             // $id_membre = (int) $_POST['id_membre'];
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="keywords" content="paiement en ligne, solution de paiement, logiciel de paiement, compliance fiscale, taxes mondiales, outil de paiement, entreprises de logiciels, checkout, simplification des paiements">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <title>SALLE DU SPORT</title>
+    <title>ENERGYM</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -140,10 +140,10 @@ include('db_connect.php');
 <div class="container mx-auto mt-10 p-5">
         <!-- Section de choix -->
         <div id="choice-section" class="flex justify-center gap-8">
-            <div onclick="showConnexionForm()" class="w-1/4 bg-blue-500 text-white p-10 rounded-lg text-center cursor-pointer hover:bg-blue-700 transition">
+            <div onclick="showConnexionForm()" class="w-1/4 bg-blue-800 text-white p-10 rounded-lg text-center cursor-pointer hover:bg-blue-700 transition">
                 <h2 class="text-xl font-bold">Connexion</h2>
             </div>
-            <div onclick="showActivityForm()" class="w-1/4 bg-green-500 text-white p-10 rounded-lg text-center cursor-pointer hover:bg-green-700 transition">
+            <div onclick="showActivityForm()" class="w-1/4 bg-violet-500 text-white p-10 rounded-lg text-center cursor-pointer hover:bg-green-700 transition">
                 <h2 class="text-xl font-bold">Déjà Connecté</h2>
             </div>
         </div>
@@ -198,7 +198,7 @@ include('db_connect.php');
         <div id="activity-description" class="mt-4 p-4 bg-gray-100 rounded text-gray-800"></div>
 
         <!-- Bouton de soumission -->
-        <button type="submit" name="reserver" class="bg-green-500 text-white p-2 rounded hover:bg-green-700 w-full mt-4">
+        <button type="submit" name="reserver" class="bg-violet-500 text-white p-2 rounded hover:bg-green-700 w-full mt-4">
             Réserver
         </button>
     </form>
