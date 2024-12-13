@@ -1,7 +1,6 @@
 # Gestion-des-R-servations-dans-une-Salle-de-Sport
 Ce projet focalise sur le développement d'une interface de gestion des clients d'une Salle de Sport en utilisant PHP et SQL
 
-# README - Gestion des Activités
 
 ## Description du Projet
 Ce projet est une application web de gestion des activités. L'objectif est de permettre à un administrateur de créer, modifier, supprimer et afficher des activités via une interface web intuitive. Chaque activité comporte des informations essentielles comme le nom, la description, la capacité, la date de début et la date de fin. Le système est conçu pour être rapide, sécurisé et facile à utiliser.
