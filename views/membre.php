@@ -1,6 +1,6 @@
 <?php 
 include "db_connect.php";
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['reserver'])) {
     try {
         // Vérification si tous les champs requis pour la réservation sont présents et non vides
         if (!empty($_GET['id_activite']) && isset($_GET['reserver'])) {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo "<script>alert('Erreur lors de la réservation : " . $e->getMessage() . "');</script>";
     }
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['inscrit'])) {
     try {
         // Vérification si tous les champs sont présents et non vides
         if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['telephone'])) {
@@ -168,7 +168,7 @@ include('db_connect.php');
                     <span class="block text-gray-700">Téléphone</span>
                     <input type="tel" name="telephone" class="w-full mt-1 p-2 border rounded" required>
                 </label>
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">S'inscrire</button>
+                <button type="submit" name="inscrit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">S'inscrire</button>
             </form>
         </div>
 

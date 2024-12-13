@@ -1,10 +1,10 @@
 <?php
 // Inclure le fichier de connexion à la base de données
 require_once('db_connect.php');
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['ajoutact'])) {
     // Récupération et validation des champs du formulaire
     $nom = isset($_GET['nom']) ? trim($_GET['nom']) : '';
-    $description = isset($_GET['description']) ? trim($_GET['description']) : '';
+    $descriptionn = isset($_GET['description']) ? trim($_GET['description']) : '';
     $capacite = isset($_GET['capacite']) ? intval($_GET['capacite']) : 0;
     $date_debut = isset($_GET['date_debut']) ? $_GET['date_debut'] : '';
     $date_fin = isset($_GET['date_fin']) ? $_GET['date_fin'] : '';
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $stmt = $conn->prepare($sql);
         
         $stmt->bindParam(':nom_Activité', $nom);
-        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':description', $descriptionn);
         $stmt->bindParam(':capacite', $capacite);
         $stmt->bindParam(':date_debut', $date_debut);
         $stmt->bindParam(':date_fin', $date_fin);
@@ -25,9 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         
         echo '<script>alert("Activité ajoutée avec succès !");</script>';
     } catch (PDOException $e) {
-        echo 'Erreur lors de l\'ajout de l\'activité : ' . $e->getMessage();
+        echo '<script>alert("Erreur lors de l\'ajout de l\'activité : ");</script>' . $e->getMessage();
     }
 }
+
 // Traitement des formulaires
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -58,24 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Vérification de la suppression d'une réservation
-    if (isset($_POST['delete'])) {
-        $id_reservation = intval($_POST['id_reservation']); // Renommage du champ id -> id_reservation
-        
-        if ($id_reservation > 0) {
-            $query = "DELETE FROM reservations WHERE id_reservation = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("i", $id_reservation);
-            
-            if ($stmt->execute()) {
-                echo "Réservation supprimée avec succès.";
-            } else {
-                echo "Erreur lors de la suppression de la réservation : " . $stmt->error;
-            }
-        } else {
-            echo "ID de réservation invalide.";
-        }
-    }
+    
     
 }
 // Suppression d'un membre
@@ -90,6 +74,32 @@ if (isset($_GET['supprimer']) && isset($_GET['id_Membre'])) {
         echo "<script> alert('Membre supprimé avec succès !');</script>";
     } catch (PDOException $e) {
         echo 'Erreur lors de la suppression du membre : ' . $e->getMessage();
+    }
+}
+// Suppression d'un membre
+if (isset($_GET['deleteAct']) && isset($_GET['id_Activite'])) {
+    $idact = intval($_GET['id_Activite']);
+    try {
+        $sql = "DELETE FROM activite WHERE id_Activite = :id_Activite";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id_Activite', $idact, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        echo "<script> alert('Activité supprimé avec succès !');</script>";
+    } catch (PDOException $e) {
+        echo 'Erreur lors de la suppression du membre : ' . $e->getMessage();
+    }
+}
+// Suppression de la réservation si le bouton est cliqué
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete']) && !empty($_POST['id_reservation'])) {
+    try {
+        $id_reservation = (int) $_POST['id_reservation'];
+        $stmt = $conn->prepare("DELETE FROM reservations WHERE id_reservation = :id_reservation");
+        $stmt->execute([':id_reservation' => $id_reservation]);
+        
+        echo "<script>alert('Réservation supprimée avec succès.'); window.location.href='admin.php';</script>";
+    } catch (PDOException $e) {
+        echo "<script>alert('Erreur lors de la suppression : " . $e->getMessage() . "');</script>";
     }
 }
 // Récupérer toutes les réservations
@@ -117,7 +127,7 @@ if ($result === false) {
     <header class="bg-purple-100">
         <nav class="bg-purple-100 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
+            <img src="../assets/images/energym.png" class="h-8 me-3 scale-[2]" alt="energym Logo" />
                 <div class="flex items-center lg:order-2">
                     <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a>
                     <a href="#" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Get started</a>
@@ -179,8 +189,7 @@ if ($result === false) {
                     <td>{$row['mail']}</td>
                     <td>{$row['telephone']}</td>
                     <td>
-                        <button  class='text-blue-500'>Modifier</button> |
-                        <button class='text-red-500'><a href='?supprimer=1&id_Membre=" . $row['id_Membre'] . "' onclick='return confirm(\"Voulez-vous vraiment supprimer ce membre ?\")'>Supprimer</a></button>
+                        <button class='bg-violet-500 text-white px-4 py-2 rounded'><a href='?supprimer=1&id_Membre=" . $row['id_Membre'] . "' onclick='return confirm(\"Voulez-vous vraiment supprimer ce membre ?\")'>Supprimer</a></button>
                     </td>
                 </tr>";
         }
@@ -214,8 +223,8 @@ if ($result === false) {
                     <td>{$row['date_debut']}</td>
                     <td>{$row['date_fin']}</td>
                     <td>
-                        <a href='edit_activite.php?id={$row['id_Activite']}' class='text-blue-500'>Modifier</a> |
-                        <a href='delete_activite.php?id={$row['id_Activite']}' class='text-red-500'>Supprimer</a>
+                        <button class='bg-violet-500 text-white px-4 py-2 rounded'><a href='?deleteAct=1&id_Activite=" . $row['id_Activite'] . "' onclick='return confirm(\"Voulez-vous vraiment supprimer cette Activité ?\")'>Supprimer</a></button>
+
                     </td>
                 </tr>";
         }
@@ -253,72 +262,49 @@ if ($result === false) {
                 <input type="date" id="date_fin" name="date_fin" required class="mt-1 p-2 border rounded w-full">
             </div>
 
-            <button type="submit" class="justify-self-center flex bg-violet-500 text-white px-4 py-2 rounded">Ajouter l'activité</button>
+            <button type="submit" name="ajoutact" class="justify-self-center flex bg-violet-500 text-white px-4 py-2 rounded">Ajouter l'activité</button>
         </form>
     </div>
 
 <!-- --------------------------------------reservation---------------------- -->
  <!-- Tableau des réservations -->
  <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-2xl font-semibold mb-4">Liste des Réservations</h2>
-            <table class="table-auto w-full">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2">ID</th>
-                        <th class="px-4 py-2">Nom du Membre</th>
-                        <th class="px-4 py-2">Id activité</th>
-                        <th class="px-4 py-2">date</th>
-                        <th class="px-4 py-2">statut</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php 
-$stmt = $conn->query("SELECT * FROM reservations"); 
-while($row = $stmt->fetch(PDO::FETCH_ASSOC)) : 
-?>
-<tr class="border-t">
-    <!-- Affichage des colonnes de la table reservations -->
-    <td class="px-4 py-2"><?= htmlspecialchars($row['id_reservation']) ?></td>
-    <td class="px-4 py-2"><?= htmlspecialchars($row['idmembre']) ?></td>
-    <td class="px-4 py-2"><?= htmlspecialchars($row['idactivite']) ?></td>
-    <td class="px-4 py-2"><?= htmlspecialchars($row['date_reservation']) ?></td>
-    <td class="px-4 py-2"><?= htmlspecialchars($row['statut']) ?></td>
-
-    <td class="px-4 py-2">
-        <!-- Formulaire de modification -->
-        <form method="POST" action="" class="inline">
-            <input type="hidden" name="id_reservation" value="<?= htmlspecialchars($row['id_reservation']) ?>">
-            
-            <!-- Sélection de l'ID du membre -->
-            <input type="number" name="idmembre" value="<?= htmlspecialchars($row['idmembre']) ?>" class="border p-1 rounded w-28">
-            
-            <!-- Sélection de l'ID de l'activité -->
-            <input type="number" name="idactivite" value="<?= htmlspecialchars($row['idactivite']) ?>" class="border p-1 rounded w-28">
-            
-            <!-- Date de réservation -->
-            <input type="datetime-local" name="date_reservation" value="<?= htmlspecialchars(date('Y-m-d\TH:i', strtotime($row['date_reservation']))) ?>" class="border p-1 rounded w-28">
-            
-            <!-- Sélection du statut de la réservation -->
-            <select name="statut" class="border p-1 rounded w-28">
-                <option value="Confirmée" <?= $row['statut'] === 'Confirmée' ? 'selected' : '' ?>>Confirmée</option>
-                <option value="Annulée" <?= $row['statut'] === 'Annulée' ? 'selected' : '' ?>>Annulée</option>
-            </select>
-            
-            <button type="submit" name="edit" class="bg-green-500 text-white px-2 py-1 rounded">Modifier</button>
-        </form>
-
-        <!-- Formulaire de suppression -->
-        <form method="POST" action="" class="inline">
-            <input type="hidden" name="id_reservation" value="<?= htmlspecialchars($row['id_reservation']) ?>">
-            <button type="submit" name="delete" class="bg-red-500 text-white px-2 py-1 rounded">Supprimer</button>
-        </form>
-    </td>
-</tr>
-<?php endwhile; ?>
-
-                </tbody>
-            </table>
-        </div>
+    <h2 class="text-2xl font-semibold mb-4">Liste des Réservations</h2>
+    <table class="table-auto w-full">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Nom du Membre</th>
+                <th class="px-4 py-2">ID Activité</th>
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Statut</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                $stmt = $conn->query("SELECT * FROM reservations"); 
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)) : 
+            ?>
+            <tr class="border-t">
+                <!-- Affichage des colonnes de la table reservations -->
+                <td class="px-4 py-2"><?= htmlspecialchars($row['id_reservation']) ?></td>
+                <td class="px-4 py-2"><?= htmlspecialchars($row['idmembre']) ?></td>
+                <td class="px-4 py-2"><?= htmlspecialchars($row['idactivite']) ?></td>
+                <td class="px-4 py-2"><?= htmlspecialchars($row['date_reservation']) ?></td>
+                <td class="px-4 py-2"><?= htmlspecialchars($row['statut']) ?></td>
+                <td class="px-4 py-2">
+                    <!-- Formulaire de suppression -->
+                    <form method="POST" action="">
+                        <input type="hidden" name="id_reservation" value="<?= htmlspecialchars($row['id_reservation']) ?>">
+                        <button type="submit" name="delete" class="bg-violet-500 text-white px-4 py-2 rounded" onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?')">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>
 </main>
 
 
