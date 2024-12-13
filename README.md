@@ -127,6 +127,7 @@ CREATE TABLE reservations (
 ```
 /
 |-- index.php              # Page contient lien vers page principale
+|-- Doc                     # Dossier contient docummentation pour le projet
 |-- views                  # Dossiers contenant les pages web 
     |-- admin.php          # Page principale de gestion des membres et activités et les résevations
     |-- db_connect.php     # Fichier de connexion à la base de données
