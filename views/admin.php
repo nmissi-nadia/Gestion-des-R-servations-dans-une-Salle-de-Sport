@@ -1,67 +1,8 @@
 <?php
 // Inclure le fichier de connexion à la base de données
-require_once('db_connect.php');
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['ajoutact'])) {
-    // Récupération et validation des champs du formulaire
-    $nom = isset($_GET['nom']) ? trim($_GET['nom']) : '';
-    $descriptionn = isset($_GET['description']) ? trim($_GET['description']) : '';
-    $capacite = isset($_GET['capacite']) ? intval($_GET['capacite']) : 0;
-    $date_debut = isset($_GET['date_debut']) ? $_GET['date_debut'] : '';
-    $date_fin = isset($_GET['date_fin']) ? $_GET['date_fin'] : '';
+include "db_connect.php";
 
-    try {
-        // Insertion de l'activité dans la base de données avec requête préparée
-        $sql = "INSERT INTO activite (nom_Activité, description, capacite, date_debut, date_fin) 
-                VALUES (:nom_Activité, :description, :capacite, :date_debut, :date_fin)";
-        $stmt = $conn->prepare($sql);
-        
-        $stmt->bindParam(':nom_Activité', $nom);
-        $stmt->bindParam(':description', $descriptionn);
-        $stmt->bindParam(':capacite', $capacite);
-        $stmt->bindParam(':date_debut', $date_debut);
-        $stmt->bindParam(':date_fin', $date_fin);
-        
-        $stmt->execute();
-        
-        echo '<script>alert("Activité ajoutée avec succès !");</script>';
-    } catch (PDOException $e) {
-        echo '<script>alert("Erreur lors de l\'ajout de l\'activité : ");</script>' . $e->getMessage();
-    }
-}
 
-// Traitement des formulaires
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // Vérification de la modification d'une réservation
-    if (isset($_POST['edit'])) {
-        $id_reservation = intval($_POST['id_reservation']); // Renommage du champ id -> id_reservation
-        $idmembre = intval($_POST['idmembre']); // Assurez-vous que c'est un nombre entier
-        $idactivite = intval($_POST['idactivite']); // Assurez-vous que c'est un nombre entier
-        $date_reservation = $_POST['date_reservation']; // Date au format DATETIME
-        $statut = $_POST['statut']; // Statut (Confirmée ou Annulée)
-        
-        // Validation des entrées utilisateur
-        if (!empty($date_reservation) && in_array($statut, ['Confirmée', 'Annulée'])) {
-            $query = "UPDATE reservations 
-                      SET idmembre = ?, idactivite = ?, date_reservation = ?, statut = ? 
-                      WHERE id_reservation = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("iissi", $idmembre, $idactivite, $date_reservation, $statut, $id_reservation);
-            
-            if ($stmt->execute()) {
-                echo "Réservation mise à jour avec succès.";
-            } else {
-                echo "Erreur lors de la mise à jour de la réservation : " . $stmt->error;
-            }
-        } else {
-            echo "Les champs sont invalides.";
-        }
-    }
-
-    
-    
-}
 // Suppression d'un membre
 if (isset($_GET['supprimer']) && isset($_GET['id_Membre'])) {
     $idMembre = intval($_GET['id_Membre']);
@@ -236,7 +177,7 @@ if ($result === false) {
 <div class="container mx-auto mt-8 p-4 bg-purple-100 shadow-md rounded justify-self-center  w-3/5">
         <h1 class="text-2xl font-bold mb-4">Ajouter une Activité</h1>
 
-        <form method="GET" action="" class="space-y-4">
+        <form method="POST" action="add_activite.php" class="space-y-4">
             <div>
                 <label for="nom" class="block font-medium text-gray-700">Nom de l'activité</label>
                 <input type="text" id="nom" name="nom" required class="mt-1 p-2 border rounded w-full">
