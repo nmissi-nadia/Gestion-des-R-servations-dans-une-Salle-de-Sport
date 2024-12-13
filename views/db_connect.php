@@ -11,9 +11,9 @@ try {
 
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    echo "<script>alert(Connexion réussie à la base de données.);</script>";
+    // echo "<script> alert('Connexion réussie à la base de données.');</script>";
 } catch (PDOException $e) {
    
-    die("<script>alert(Erreur de connexion à la base de données : );</script>" . $e->getMessage());
+    die("<script>alert('Erreur de connexion à la base de données : ');</script>" . $e->getMessage());
 }
 ?>
