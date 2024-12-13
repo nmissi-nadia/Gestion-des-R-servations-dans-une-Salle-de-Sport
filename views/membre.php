@@ -1,3 +1,81 @@
+<?php 
+include "db_connect.php";
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    try {
+        // Vérification si tous les champs requis pour la réservation sont présents et non vides
+        if (!empty($_GET['id_activite'])) {
+            
+            // Sécuriser les entrées utilisateurs (protection XSS)
+            // $id_membre = (int) $_POST['id_membre'];
+            $id_membre = 1;
+            $id_activite = (int) $_GET['id_activite'];
+        
+            // Insertion dans la table des réservations
+            $stmt = $conn->prepare("INSERT INTO reservations (idmembre, idactivite) 
+                                    VALUES (:id_membre, :id_activite)");
+            $stmt->execute([
+                ':id_membre' => $id_membre,
+                ':id_activite' => $id_activite
+            ]);
+
+            // Affichage du message de confirmation
+            echo "<script>
+                    alert('Réservation réussie !');
+                  </script>";
+
+        } else {
+            echo "<script>alert('Veuillez remplir tous les champs de la réservation.');</script>";
+        }
+
+    } catch (PDOException $e) {
+        // Affichage de l'erreur s'il y a un problème de connexion ou d'insertion
+        echo "<script>alert('Erreur lors de la réservation : " . $e->getMessage() . "');</script>";
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Vérification si tous les champs sont présents et non vides
+        if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['telephone'])) {
+            
+            // Sécuriser les entrées utilisateurs (protection XSS)
+            $nom = htmlspecialchars(trim($_POST['nom']));
+            $prenom = htmlspecialchars(trim($_POST['prenom']));
+            $mail = htmlspecialchars(trim($_POST['mail']));
+            $telephone = htmlspecialchars(trim($_POST['telephone']));
+
+            // Validation de l'email
+            if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+                echo "<script>alert('Veuillez entrer un email valide.');</script>";
+                exit;
+            }
+
+            // Insertion dans la table des membres
+            $stmt = $conn->prepare("INSERT INTO membres (nom, prenom, mail, telephone) 
+                                    VALUES (:nom, :prenom, :mail, :telephone)");
+            $stmt->execute([
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':mail' => $mail,
+                ':telephone' => $telephone
+            ]);
+
+            // Affichage du message de confirmation et appel de la fonction pour afficher le formulaire d'activités
+            echo "<script>
+                    alert('Inscription réussie ! Vous pouvez maintenant réserver des activités.');
+                    showActivityForm();
+                  </script>";
+
+        } else {
+            echo "<script>alert('Veuillez remplir tous les champs du formulaire du membre.');</script>";
+        }
+
+    } catch (PDOException $e) {
+        // Affichage de l'erreur s'il y a un problème de connexion ou d'insertion
+        echo "<script>alert('Erreur lors de l\'insertion des données : " . $e->getMessage() . "');</script>";
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,9 +149,9 @@ include('db_connect.php');
         </div>
 
         <!-- Formulaire de connexion -->
-        <div id="connexion-form" class="flex justify-center mt-10">
+        <div id="connexion-form" class="hidden flex-column flex justify-center mt-10">
             <h2 class="text-2xl font-bold mb-5">Formulaire de Connexion</h2>
-            <form id="membreForm" action="membre.php" method="POST" class="bg-white p-8 shadow-md rounded-lg">
+            <form id="membreForm" action="membre.php" method="POST" class="bg-purple-200 w-[500px]  p-8 shadow-md rounded-lg">
                 <label class="block mb-4">
                     <span class="block text-gray-700">Nom</span>
                     <input type="text" name="nom" class="w-full mt-1 p-2 border rounded" required>
@@ -99,12 +177,12 @@ include('db_connect.php');
     <h2 class="text-2xl font-bold mb-5">Formulaire de Réservation d'Activités</h2>
     
     <!-- Formulaire de réservation -->
-    <form id="activityForm" action="membre.php" method="POST" class="bg-white p-8 shadow-md rounded-lg">
+    <form id="activityForm" action="membre.php" method="GET" class="bg-white p-8 shadow-md rounded-lg">
         
         <!-- Sélection de l'activité -->
         <label class="block mb-4">
             <span class="block text-gray-700">Choisissez une activité</span>
-            <select name="activite_id" id="activiteSelect" class="w-full mt-1 p-2 border rounded" onchange="afficherDescription()">
+            <select name="id_activite" id="activiteSelect" class="w-full mt-1 p-2 border rounded" onchange="afficherDescription()">
                 <option value="" disabled selected>-- Sélectionnez une activité --</option>
                 <?php 
                     include "db_connect.php";
@@ -282,83 +360,3 @@ include('db_connect.php');
 </body>
 </html>
 
-<?php 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reserver'])) {
-    try {
-        // Vérification si tous les champs requis pour la réservation sont présents et non vides
-        if (!empty($_POST['id_membre']) && !empty($_POST['id_activite']) && !empty($_POST['date_reservation']) && !empty($_POST['heure_reservation'])) {
-            
-            // Sécuriser les entrées utilisateurs (protection XSS)
-            $id_membre = (int) $_POST['id_membre']; // On force l'id à être un entier
-            $id_activite = (int) $_POST['id_activite']; // On force l'id à être un entier
-            $date_reservation = htmlspecialchars(trim($_POST['date_reservation']));
-            $heure_reservation = htmlspecialchars(trim($_POST['heure_reservation']));
-
-            // Insertion dans la table des réservations
-            $stmt = $conn->prepare("INSERT INTO reservation (id_membre, id_activite, date_reservation, heure_reservation) 
-                                    VALUES (:id_membre, :id_activite, :date_reservation, :heure_reservation)");
-            $stmt->execute([
-                ':id_membre' => $id_membre,
-                ':id_activite' => $id_activite,
-                ':date_reservation' => $date_reservation,
-                ':heure_reservation' => $heure_reservation
-            ]);
-
-            // Affichage du message de confirmation
-            echo "<script>
-                    alert('Réservation réussie !');
-                  </script>";
-
-        } else {
-            echo "<script>alert('Veuillez remplir tous les champs de la réservation.');</script>";
-        }
-
-    } catch (PDOException $e) {
-        // Affichage de l'erreur s'il y a un problème de connexion ou d'insertion
-        echo "<script>alert('Erreur lors de la réservation : " . $e->getMessage() . "');</script>";
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        // Vérification si tous les champs sont présents et non vides
-        if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['telephone'])) {
-            
-            // Sécuriser les entrées utilisateurs (protection XSS)
-            $nom = htmlspecialchars(trim($_POST['nom']));
-            $prenom = htmlspecialchars(trim($_POST['prenom']));
-            $mail = htmlspecialchars(trim($_POST['mail']));
-            $telephone = htmlspecialchars(trim($_POST['telephone']));
-
-            // Validation de l'email
-            if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                echo "<script>alert('Veuillez entrer un email valide.');</script>";
-                exit;
-            }
-
-            // Insertion dans la table des membres
-            $stmt = $conn->prepare("INSERT INTO membres (nom, prenom, mail, telephone) 
-                                    VALUES (:nom, :prenom, :mail, :telephone)");
-            $stmt->execute([
-                ':nom' => $nom,
-                ':prenom' => $prenom,
-                ':mail' => $mail,
-                ':telephone' => $telephone
-            ]);
-
-            // Affichage du message de confirmation et appel de la fonction pour afficher le formulaire d'activités
-            echo "<script>
-                    alert('Inscription réussie ! Vous pouvez maintenant réserver des activités.');
-                    showActivityForm();
-                  </script>";
-
-        } else {
-            echo "<script>alert('Veuillez remplir tous les champs du formulaire.');</script>";
-        }
-
-    } catch (PDOException $e) {
-        // Affichage de l'erreur s'il y a un problème de connexion ou d'insertion
-        echo "<script>alert('Erreur lors de l\'insertion des données : " . $e->getMessage() . "');</script>";
-    }
-}
-?>

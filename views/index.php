@@ -90,7 +90,7 @@
     </p>
   </div>
   <div class="px-6 pt-4 pb-2">
-  <button onclick="window.location.href='membre.php'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+  <button onclick="window.location.href='membre.php'" class="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
   Membre
 </button>
   </div>
@@ -104,7 +104,7 @@
     </p>
   </div>
   <div class="px-6 pt-4 pb-2">
-  <button onclick="window.location.href='admin.php'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+  <button onclick="window.location.href='admin.php'" class="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
   Administration
 </button>
   </div>
