@@ -14,7 +14,7 @@
     <header class="bg-purple-100">
         <nav class="bg-purple-100 border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
+            <img src="../assets/images/energym.png" class="h-8 me-3 scale-[2.5]" alt="energym Logo" />
                 <div class="flex items-center lg:order-2">
                     <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a>
                     <a href="#" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Get started</a>
@@ -54,13 +54,13 @@
         <!-- Texte et boutons -->
         <div class="mr-auto place-self-center lg:col-span-7">
             <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
-            Bienvenue à la Salle de Sport
+            Bienvenue à votre Salle de Sport
             </h1>
             <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
             Utilisez les liens ci-dessus pour naviguer dans l'application.
             </p>
             <div class="flex flex-wrap gap-3">
-                <a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                <a href="#" class="bg-violet-500 rounded-lg inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     Get Started
                     <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -84,10 +84,9 @@
     <div class="max-w-sm rounded overflow-hidden shadow-lg">
   <img class="w-full" src="../assets/images/membre.jpg" alt="Sunset in the mountains">
   <div class="px-6 py-4">
-    <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
+    <div class="font-bold text-xl mb-2">Espace Membre</div>
     <p class="text-gray-700 text-base">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-    </p>
+    Accédez à vos informations personnelles, consultez vos réservations et découvrez nos activités exclusives. Ici, vous pouvez suivre votre historique, gérer vos inscriptions et rester informé des nouveautés. Profitez d'une expérience personnalisée et d'un accès simplifié à tous nos services.    </p>
   </div>
   <div class="px-6 pt-4 pb-2">
   <button onclick="window.location.href='membre.php'" class="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
@@ -98,10 +97,9 @@
 <div class="max-w-sm rounded overflow-hidden shadow-lg">
   <img class="w-full" src="../assets/images/manager.jpg" alt="Sunset in the mountains">
   <div class="px-6 py-4">
-    <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
+    <div class="font-bold text-xl mb-2">Espace Administration</div>
     <p class="text-gray-700 text-base">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-    </p>
+    Gérez efficacement les activités, les réservations et les membres de la plateforme. Cet espace vous permet de superviser, ajouter, modifier ou supprimer les contenus en toute simplicité. Assurez un suivi en temps réel des opérations essentielles et maintenez un contrôle total sur le bon fonctionnement du système.    </p>
   </div>
   <div class="px-6 pt-4 pb-2">
   <button onclick="window.location.href='admin.php'" class="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
@@ -296,7 +294,7 @@
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="md:flex md:justify-between">
           <div class="mb-6 md:mb-0">
-                  <img src="../assets/images/energym.png" class="h-8 me-3" alt="energym Logo" />
+                  <img src="../assets/images/energym.png" class="h-8 me-3 scale-[2.5]" alt="energym Logo" />
           </div>
           <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
               <div>
