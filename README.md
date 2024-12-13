@@ -3,12 +3,15 @@ Ce projet focalise sur le développement d'une interface de gestion des clients 
 
 
 ## Description du Projet
-Une salle de sport souhaite moderniser son système de gestion en mettant en place une application web. Actuellement, toutes les opérations sont réalisées manuellement, ce qui entraîne des erreurs et des difficultés dans la gestion quotidienne. Le but est de créer un outil simple pour :
+Une salle de sport souhaite moderniser son système de gestion en mettant en place une application web. Actuellement, toutes les opérations sont réalisées manuellement, ce qui entraîne des erreurs et des difficultés dans la gestion quotidienne.
 
-​
+ Le but est de créer un outil simple pour :
+
 
 Gérer les membres inscrits à la salle.
+
 Planifier et afficher les activités ou équipements disponibles.
+
 Permettre aux membres de réserver des activités ou des équipements.
 
 ## Fonctionnalités Principales
@@ -159,25 +162,6 @@ try {
     exit;
 }
 ```
-
-## Captures d'écran
-### 1. Formulaire d'ajout du membre
-![Formulaire d'ajout](assets/images/form_ajout.png)
-
-### 2. Liste des membres
-![Table des activités](assets/images/liste_activites.png)
-
-### 1. Formulaire d'ajout d'activité
-![Formulaire d'ajout](assets/images/form_ajout.png)
-
-### 2. Liste des activités
-![Table des activités](assets/images/liste_activites.png)
-
-### 1. Formulaire d'ajout de réservations
-![Formulaire d'ajout](assets/images/form_ajout.png)
-
-### 2. Liste des réservations
-![Table des activités](assets/images/liste_activites.png)
 
 ## Sécurité
 - **Protection contre les injections SQL** : Utilisation de requêtes préparées.
